@@ -25,6 +25,10 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+
+    - name: Maven Test
+      run: mvn test
+      
     - name: Maven Package
       run: mvn -B package -DskipTests -f ./pom.xml
 
