@@ -25,14 +25,35 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
-      
-    - name: Docker Build and push
-      id: ecr-publish
-      uses: bitovi/github-actions-ecr-publish@v0.1.0
-      with:
-        aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws_default_region: ${{ secrets.AWS_REGION }}
-        aws_ecr_repo_name: ${{ secrets.AWS_REPO_NAME }}
+    - name: Maven Package
+      run: mvn -B package -DskipTests -f ./pom.xml
+
+    -   name: Configure AWS credentials
+
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ secrets.AWS_REGION }}
+
+    -   name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+    -   name: set env
+        id: vars
+        run: |
+            echo ::set-output name=github_short_sha::$(echo ${GITHUB_SHA:0:7})
+
+    -   name: Build & Push Image
+        id: build-image
+        env:
+            DOCKER_BUILDKIT: 1
+            ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+            ECR_REPOSITORY: ${{ secrets.AWS_REPO_NAME }}
+            IMAGE_TAG: ${{ steps.vars.outputs.github_short_sha }}
+        run: |
+            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+            docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+            docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+            echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
