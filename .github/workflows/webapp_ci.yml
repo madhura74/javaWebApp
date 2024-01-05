@@ -11,8 +11,6 @@ name: Java CI with Maven
 on:
   push:
     branches: [ ]
-  pull_request:
-    branches: [ ]
 
 jobs:
   build:
@@ -29,7 +27,12 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-
-    # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
-    - name: Update dependency graph
-      uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
+      
+    - name: Docker Build and push
+      id: ecr-publish
+      uses: bitovi/github-actions-ecr-publish@v0.1.0
+      with:
+        aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws_default_region: ${{ secrets.AWS_REGION }}
+        aws_ecr_repo_name: ${{ secrets.AWS_REPO_NAME }}
