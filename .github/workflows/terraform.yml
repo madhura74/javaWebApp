@@ -1,0 +1,45 @@
+name: 'Terraform'
+
+on:
+  push:
+    branches: []
+  
+jobs:
+    terraform:
+      name: 'Terraform'
+      env:
+        # AWS secrets
+        AWS_ACCESS_KEY_ID: ${{ secrets.AAWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
+        AWS_BUCKET_KEY_NAME: ${{ secrets.AWS_BUCKET_KEY_NAME }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+
+      runs-on: ubuntu-latest
+      environment: production
+
+      steps:
+        # Checkout the repository to the GitHub Actions runner
+        - name: Checkout
+          uses: actions/checkout@v3
+
+        - name: Terraform Init   
+          run: |
+            working-directory: ./terraform
+            terraform init -backend-config="bucket=${AWS_BUCKET_NAME}" -backend-config="key=${AWS_BUCKET_KEY_NAME}" -backend-config="region=${AWS_REGION}"
+
+
+        - name: Terraform Plan
+          run: |
+            working-directory: ./terraform
+            tterraform plan -input=false
+
+        - name: Terraform Init
+          if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
+          run: |
+            working-directory: ./terraform
+            terraform apply -auto-approve -input=false
+          
+         
+
+        
