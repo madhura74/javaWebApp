@@ -19,18 +19,18 @@ Before proceeding with the deployment, ensure that the following prerequisites a
 ## Developers
 Clone the Repository
 
-(` git clone https://github.com/your-username/your-java-application.git `)
+` git clone https://github.com/your-username/your-java-application.git `
 
 Build the Application
 
 Navigate to the application's root directory and build the project using Maven:
-(` mvn clean install `)
+` mvn clean install `
 
 Test the Application 
-(` mvn clean test `)
+` mvn clean test `
 
 Run the application using the following Maven command:
-(` mvn spring-boot:run `)
+` mvn spring-boot:run `
 
 The application will be accessible at http://localhost:8080.
 
@@ -40,10 +40,10 @@ The application will be accessible at http://localhost:8080.
 We have used docker to containerise the application. Refer dockerfile for the code. Follow bellow steps to run the dockerised instance of the application from your local machine.
 
 Build the docker image from the root directory
-(` docker build -t java_webapp . `)
+` docker build -t java_webapp . `
 
 Run the docker image.
-(` docker run -p 8080:8080 -td java_webapp `)
+` docker run -p 8080:8080 -td java_webapp `
 
 The application will be accessible at http://localhost:8080.
 
@@ -51,24 +51,24 @@ The application will be accessible at http://localhost:8080.
 Have a look at the Terraform files and modules that are present in the folder terraform. This infracture consists creation of ECR to store docker images, a VPC and its components and EKS.
 
 Set the AWS configuration profile with below command
-(`aws configure --profile terraform `)
+`aws configure --profile terraform `
 Provide the values of your ID, secrete and region.
 
 
 Initiate the terraform, Run this command from the ./terraform folder 
-(` terraform init `)
+` terraform init `
 
 Terraform Plan
-(` terraform plan `)
+` terraform plan `
 
 Create the resources in AWS
-(` terraform apply`)
+` terraform apply`
 
 Note :
 The terraform state file will be referred from S3 bucket which us previosly created. 
 
 If you want to delete the resources after application deployment and testing, run below command.
-(` terraform destroy `)
+` terraform destroy `
 
 
 ## Kubernetes Manifestations
@@ -79,19 +79,19 @@ Refer the manifest files present in the folder manifest
 To deploy the application to EKS, follow the bellow commands.
 
 To fetch and update the kubeconfig details
-(` aws eks update-kubeconfig --name <eks-Name> --region <aws-region> `)
+` aws eks update-kubeconfig --name <eks-Name> --region <aws-region> `
 
 To create the namespace, run the below command. This could be a onetime action, for the initial set up.
-(` kubectl apply -f ./manifests/namespace-1.yaml `) 
+` kubectl apply -f ./manifests/namespace-1.yaml ` 
 
 To create the deployment resource, run the below command
-(` kubectl apply -f ./manifests/deploy-webapp.yaml `) 
+` kubectl apply -f ./manifests/deploy-webapp.yaml ` 
 
 To create the service, run the below command.
-(` kubectl apply -f ./manifests/service-webapp.yaml `) 
+` kubectl apply -f ./manifests/service-webapp.yaml ` 
 
 To check the deployment of the resources, run below commands,
-(` kubectl get all -n <your namespace> 
+` kubectl get all -n <your namespace> 
 
 From the service created, copy the EXTERNAL-IP url to access the application.
 
@@ -126,7 +126,11 @@ Click Add secret.
 
 
 You can also store your secretes specific to an environment.
-[Know more about github secrtes](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions)
+[Know more about github secrtes]https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions
+
+To check the Pipeline executios, navigate to the main page of the repository.
+Select Actions, under All workflows select _Java WebApp CICD_.
+Once you select the latest run, you can see all the stages 
 
 
 
