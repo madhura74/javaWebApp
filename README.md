@@ -1,6 +1,6 @@
 ## About The Project
 
-his guide provides step-by-step instructions for deploying the javaWebApp, a simple Java spring application which give a Welcome message to the user. Follow these steps to ensure a smooth deployment process.
+This guide provides step-by-step instructions for deploying the javaWebApp, a simple Java spring application which gives a Welcome message to the user. Follow these steps to ensure a smooth deployment process.
 
 Use the `README.md` to get started.
 
@@ -14,7 +14,7 @@ Before proceeding with the deployment, ensure that the following prerequisites a
 - [ ] AWS account with a valid Access Key Id and secrete access key
 - [ ] AWS CLI
 - [ ] Terraform
-- [ ] Amazon S3 to store terraform state file.
+- [ ] Amazon S3 Bucket to store terraform state file.
 
 ## Developers
 Clone the Repository
@@ -32,82 +32,85 @@ Test the Application
 Run the application using the following Maven command:
 ` mvn spring-boot:run `
 
-The application will be accessible at http://localhost:8080.
+The application will be accessible at [http://localhost:8080](http://localhost:8080).
 
 
 ## Containerisation using Docker
 
-We have used docker to containerise the application. Refer dockerfile for the code. Follow bellow steps to run the dockerised instance of the application from your local machine.
+We have used docker to containerise the application. Refer [dockerfile](https://github.com/madhura74/javaWebApp/blob/main/dockerfile) for the code. 
 
-Build the docker image from the root directory
+Follow the steps mentioned below to run the dockerised instance of the application from your local machine.
+
+1. Build the docker image from the root directory
 ` docker build -t java_webapp . `
 
-Run the docker image.
+2. Run the docker image.
 ` docker run -p 8080:8080 -td java_webapp `
 
-The application will be accessible at http://localhost:8080.
+The application will be accessible at [http://localhost:8080](http://localhost:8080).
 
 ## Infrastructure creation using Terraform 
-Have a look at the Terraform files and modules that are present in the folder terraform. This infracture consists creation of ECR to store docker images, a VPC and its components and EKS.
+Have a look at the Terraform files and modules that are present in the folder [terraform](https://github.com/madhura74/javaWebApp/tree/main/terraform).
+This infracture consists creation of ECR to store docker images, a VPC and its components and EKS.
 
-Set the AWS configuration profile with below command
+1. Set the AWS configuration profile with below command
 `aws configure --profile terraform `
 Provide the values of your ID, secrete and region.
 
 
-Initiate the terraform, Run this command from the ./terraform folder 
+2. Initiate the terraform, Run this command from the ./terraform folder 
 ` terraform init `
 
-Terraform Plan
+3. Terraform Plan
 ` terraform plan `
 
-Create the resources in AWS
+4. Create the resources in AWS
 ` terraform apply`
 
 Note :
-The terraform state file will be referred from S3 bucket which us previosly created. 
+The terraform state file will be referred from S3 bucket which is previosly created. 
 
 If you want to delete the resources after application deployment and testing, run below command.
 ` terraform destroy `
 
 
-## Kubernetes Manifestations
+## Kubernetes Manifestation
 This application needs a namespace, kubernetes deployment resource which will spin up the instance of the application using the image from ECR.
 We also create a kubernetes service of type  load balancer to access the application.
-Refer the manifest files present in the folder manifest
+Refer the manifest files present in the folder [manifest](https://github.com/madhura74/javaWebApp/tree/main/manifests).
 
 To deploy the application to EKS, follow the bellow commands.
 
-To fetch and update the kubeconfig details
+1. fetch and update the kubeconfig details
 ` aws eks update-kubeconfig --name <eks-Name> --region <aws-region> `
 
-To create the namespace, run the below command. This could be a onetime action, for the initial set up.
+2. create the namespace, run the below command. This could be a onetime action, only during the initial setup.
 ` kubectl apply -f ./manifests/namespace-1.yaml ` 
 
-To create the deployment resource, run the below command
+3. create the deployment resource, run the below command
 ` kubectl apply -f ./manifests/deploy-webapp.yaml ` 
 
-To create the service, run the below command.
+4. create the service, run the below command.
 ` kubectl apply -f ./manifests/service-webapp.yaml ` 
 
-To check the deployment of the resources, run below commands,
+5. check the deployment of the resources, run below commands,
 ` kubectl get all -n <your namespace> 
 
-From the service created, copy the EXTERNAL-IP url to access the application.
+6. access the application, by coping the EXTERNAL-IP url from response of the above command.
 
 
 ## CICD Workflow using GitHub Actions
 
-This Workflow automates the process of integration of the application and and deployment. It majorly consists of below tasks.
+This Workflow automates the process of integration and deployment. It majorly consists of below tasks.
 1. Checkout the code 
 2. Test the unit test cases
-3. Package the application into a jar
+3. Package the application into a jar file
 4. Build a docker image and push it to ECR repocitory
 5. Deploy the docker image to EKS
 
-The pipeline will automatically triggered upon commits to configured branches.
+The pipeline will be automatically triggered upon commits to configured branches.
 
-Note: Before executing the pipeline, Store the secretes such as below, in GitHub secretes. 
+Note: Before executing the pipeline, Store the secretes such as below, in GitHub secretes using following steps. 
 
 AWS_ACCESS_KEY_ID
 AWS_EKS_NAME
@@ -115,18 +118,18 @@ AWS_REGION
 AWS_REPO_NAME
 AWS_SECRET_ACCESS_KEY
 
-On GitHub.com, navigate to the main page of the repository.
-Under your repository name, click  Settings. 
-In the "Security" section of the sidebar, select  Secrets and variables, then click Actions.
-Click the Secrets tab.
-Click New repository secret.
-In the Name field, type a name for your secret.
-In the Secret field, enter the value for your secret.
-Click Add secret.
+1. On GitHub.com, navigate to the main page of the repository.
+2. your repository name, click  Settings. 
+3. In the "Security" section of the sidebar, select  Secrets and variables, then click Actions.
+4. Click the Secrets tab.
+5. Click New repository secret.
+6. In the Name field, type a name for your secret.
+7. In the Secret field, enter the value for your secret.
+8. Click Add secret.
 
 
 You can also store your secretes specific to an environment.
-[Know more about github secrtes]https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions
+[Know more about github secrtes](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions)
 
 To check the Pipeline executios, navigate to the main page of the repository.
 Select Actions, under All workflows select _Java WebApp CICD_.
