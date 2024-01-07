@@ -16,7 +16,7 @@ public class SampleWebappApplication {
 	}
 	@GetMapping("/")
 	public String hello() {
-		return String.format("Hello! Welcome...v4");
+		return String.format("Hello! Welcome...v1.5");
 	}
 	
 
