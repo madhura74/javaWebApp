@@ -101,7 +101,7 @@ To deploy the application to EKS, follow the bellow commands.
 
 ## CICD Workflow using GitHub Actions
 
-This Workflow automates the process of integration and deployment. It majorly consists of below tasks.
+[CICD Workflow](https://github.com/madhura74/javaWebApp/blob/main/.github/workflows/webapp_cicd.yml) automates the process of integration and deployment. It majorly consists of below tasks.
 1. Checkout the code 
 2. Test the unit test cases
 3. Package the application into a jar file
@@ -131,7 +131,7 @@ AWS_SECRET_ACCESS_KEY
 You can also store your secretes specific to an environment.
 [Know more about github secrtes](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions)
 
-To check the Pipeline executios, navigate to the main page of the repository.
+To check the Pipeline executions, navigate to the main page of the repository.
 Select Actions, under All workflows select _Java WebApp CICD_.
 Once you select the latest run, you can check the status of all the jobs and tasks it has executed.
 
