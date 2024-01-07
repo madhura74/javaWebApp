@@ -77,4 +77,5 @@ jobs:
         run: |
               kubectl apply -f ./manifests/namespace-1.yaml
               kubectl apply -f ./manifests/deploy-webapp.yaml
+              kubectl apply -f ./manifests/service-webapp.yaml
               
