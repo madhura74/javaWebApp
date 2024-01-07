@@ -13,6 +13,7 @@ Before proceeding with the deployment, ensure that the following prerequisites a
 - [ ] Kubectl
 - [ ] AWS CLI
 - [ ] Terraform
+- [ ] Amazon S3 to store terraform state file.
 
 ## Developers
 Clone the Repository
@@ -46,7 +47,9 @@ Run the docker image.
 The application will be accessible at http://localhost:8080.
 
 ## Infrastructure creation using Terraform 
-We have 
+Terraform files are present in the folder terraform. This infracture consists creation of ECR to store docker images, a VPC and its components and EKS.
+
+
 
 ## Kubernetes Manifestations
 
