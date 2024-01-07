@@ -130,7 +130,7 @@ You can also store your secretes specific to an environment.
 
 To check the Pipeline executios, navigate to the main page of the repository.
 Select Actions, under All workflows select _Java WebApp CICD_.
-Once you select the latest run, you can see all the stages 
+Once you select the latest run, you can check the status of all the jobs and tasks it has executed.
 
 
 
