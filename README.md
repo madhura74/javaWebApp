@@ -24,12 +24,15 @@ Clone the Repository
 Build the Application
 
 Navigate to the application's root directory and build the project using Maven:
+
 ` mvn clean install `
 
 Test the Application 
+
 ` mvn clean test `
 
 Run the application using the following Maven command:
+
 ` mvn spring-boot:run `
 
 The application will be accessible at [http://localhost:8080](http://localhost:8080).
@@ -42,61 +45,80 @@ We have used docker to containerise the application. Refer [dockerfile](https://
 Follow the steps mentioned below to run the dockerised instance of the application from your local machine.
 
 1. Build the docker image from the root directory
+   
 ` docker build -t java_webapp . `
 
-2. Run the docker image.
+3. Run the docker image.
+   
 ` docker run -p 8080:8080 -td java_webapp `
 
 The application will be accessible at [http://localhost:8080](http://localhost:8080).
 
 ## Infrastructure creation using Terraform 
+
 Have a look at the Terraform files and modules that are present in the folder [terraform](https://github.com/madhura74/javaWebApp/tree/main/terraform).
+
 This infracture consists creation of ECR to store docker images, a VPC and its components and EKS.
 
 1. Set the AWS configuration profile with below command
+   
 `aws configure --profile terraform `
+
 Provide the values of your ID, secrete and region.
 
 
-2. Initiate the terraform, Run this command from the ./terraform folder 
+3. Initiate the terraform, Run this command from the ./terraform folder
+   
 ` terraform init `
 
-3. Terraform Plan
+4. Terraform Plan
+   
 ` terraform plan `
 
-4. Create the resources in AWS
+6. Create the resources in AWS
+   
 ` terraform apply`
 
 Note :
+
 The terraform state file will be referred from S3 bucket which is previosly created. 
 
 If you want to delete the resources after application deployment and testing, run below command.
+
 ` terraform destroy `
 
 
 ## Kubernetes Manifestation
+
 This application needs a namespace, kubernetes deployment resource which will spin up the instance of the application using the image from ECR.
+
 We also create a kubernetes service of type  load balancer to access the application.
+
 Refer the manifest files present in the folder [manifest](https://github.com/madhura74/javaWebApp/tree/main/manifests).
 
 To deploy the application to EKS, follow the bellow commands.
 
 1. fetch and update the kubeconfig details
+   
 ` aws eks update-kubeconfig --name <eks-Name> --region <aws-region> `
 
-2. create the namespace, run the below command. This could be a onetime action, only during the initial setup.
+3. create the namespace, run the below command. This could be a onetime action, only during the initial setup.
+   
 ` kubectl apply -f ./manifests/namespace-1.yaml ` 
 
-3. create the deployment resource, run the below command
+4. create the deployment resource, run the below command
+   
 ` kubectl apply -f ./manifests/deploy-webapp.yaml ` 
 
-4. create the service, run the below command.
+5. create the service, run the below command.
+   
 ` kubectl apply -f ./manifests/service-webapp.yaml ` 
 
-5. check the deployment of the resources, run below commands,
-` kubectl get all -n <your namespace> 
+6. check the deployment of the resources, run below commands,
+   
+` kubectl get all -n <your namespace> `
 
-6. access the application, by coping the EXTERNAL-IP url from response of the above command.
+7. access the application, by coping the EXTERNAL-IP url from response of the above command.
 
 
 ## CICD Workflow using GitHub Actions
@@ -129,10 +151,13 @@ AWS_SECRET_ACCESS_KEY
 
 
 You can also store your secretes specific to an environment.
+
 [Know more about github secrtes](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions)
 
 To check the Pipeline executions, navigate to the main page of the repository.
+
 Select Actions, under All workflows select _Java WebApp CICD_.
+
 Once you select the latest run, you can check the status of all the jobs and tasks it has executed.
 
 
