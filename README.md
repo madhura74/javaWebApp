@@ -105,9 +105,28 @@ This Workflow automates the process of integration of the application and and de
 4. Build a docker image and push it to ECR repocitory
 5. Deploy the docker image to EKS
 
-Store the secretes such as AWS credentials using GitHub secretes.
+The pipeline will automatically triggered upon commits to configured branches.
 
-[To know more](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions)
+Note: Before executing the pipeline, Store the secretes such as below, in GitHub secretes. 
+
+AWS_ACCESS_KEY_ID
+AWS_EKS_NAME
+AWS_REGION
+AWS_REPO_NAME
+AWS_SECRET_ACCESS_KEY
+
+On GitHub.com, navigate to the main page of the repository.
+Under your repository name, click  Settings. 
+In the "Security" section of the sidebar, select  Secrets and variables, then click Actions.
+Click the Secrets tab.
+Click New repository secret.
+In the Name field, type a name for your secret.
+In the Secret field, enter the value for your secret.
+Click Add secret.
+
+
+You can also store your secretes specific to an environment.
+[Know more about github secrtes](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions)
 
 
 
