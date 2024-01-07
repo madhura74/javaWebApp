@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: java-webapp
-        image: 730335332563.dkr.ecr.ap-south-1.amazonaws.com/madecr01:${IMAGE_TAG}
+        image: 730335332563.dkr.ecr.ap-south-1.amazonaws.com/madecr01:latest
         ports:
         - containerPort: 8080
           name: http
