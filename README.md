@@ -15,19 +15,18 @@ Before proceeding with the deployment, ensure that the following prerequisites a
 - [ ] Terraform
 
 ## Developers
-Step 1: Clone the Repository
+Clone the Repository
 
 (` git clone https://github.com/your-username/your-java-application.git `)
 
-Step 2: Build the Application
+Build the Application
 
 Navigate to the application's root directory and build the project using Maven:
 (` mvn clean install `)
 
-Step 3: Test the Application 
+Test the Application 
 (` mvn clean test `)
 
-Step 4: 
 Run the application using the following Maven command:
 (` mvn spring-boot:run `)
 
@@ -36,7 +35,18 @@ The application will be accessible at http://localhost:8080.
 
 ## Containerisation using Docker
 
+We have used docker to containerise the application. Refer dockerfile for the code.
+
+Build the docker image from the root directory
+(` docker build -t java_webapp . `)
+
+Run the docker image.
+(` docker run -p 8080:8080 -td java_webapp `)
+
+The application will be accessible at http://localhost:8080.
+
 ## Infrastructure creation using Terraform 
+We have 
 
 ## Kubernetes Manifestations
 
