@@ -63,13 +63,6 @@ jobs:
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
             echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
-
-  deploy:
-    needs: build
-
-    runs-on: ubuntu-latest
-
-    steps:
     -   name: Install kubectl
         uses: azure/setup-kubectl@v3
         with:
@@ -77,8 +70,7 @@ jobs:
             id: install
               
     -   name: update config
-        run: aws eks update-kubeconfig --name mad-eks-01 --region ap-south-1
-  
+        run: aws eks update-kubeconfig --name mad-eks-01 --region ap-south-1  
             
     -   name: Deploy to EKS
         run: |
