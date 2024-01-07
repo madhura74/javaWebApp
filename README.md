@@ -11,6 +11,7 @@ Before proceeding with the deployment, ensure that the following prerequisites a
 - [ ] Apache Maven installed
 - [ ] Docker
 - [ ] Kubectl
+- [ ] AWS account with a valid Access Key Id and secrete access key
 - [ ] AWS CLI
 - [ ] Terraform
 - [ ] Amazon S3 to store terraform state file.
@@ -36,7 +37,7 @@ The application will be accessible at http://localhost:8080.
 
 ## Containerisation using Docker
 
-We have used docker to containerise the application. Refer dockerfile for the code.
+We have used docker to containerise the application. Refer dockerfile for the code. Follow bellow steps to run the dockerised instance of the application from your local machine.
 
 Build the docker image from the root directory
 (` docker build -t java_webapp . `)
@@ -47,10 +48,54 @@ Run the docker image.
 The application will be accessible at http://localhost:8080.
 
 ## Infrastructure creation using Terraform 
-Terraform files are present in the folder terraform. This infracture consists creation of ECR to store docker images, a VPC and its components and EKS.
+Have a look at the Terraform files and modules that are present in the folder terraform. This infracture consists creation of ECR to store docker images, a VPC and its components and EKS.
 
+Set the AWS configuration profile with below command
+(`aws configure --profile terraform `)
+Provide the values of your ID, secrete and region.
+
+
+Initiate the terraform, Run this command from the ./terraform folder 
+(` terraform init `)
+
+Terraform Plan
+(` terraform plan `)
+
+Create the resources in AWS
+(` terraform apply`)
+
+Note :
+The terraform state file will be referred from S3 bucket which us previosly created. 
+
+If you want to delete the resources after application deployment and testing, run below command.
+(` terraform destroy `)
 
 
 ## Kubernetes Manifestations
+This application needs a namespace, kubernetes deployment resource which will spin up the instance of the application using the image from ECR.
+We also create a kubernetes service of type  load balancer to access the application.
+Refer the manifest files present in the folder manifest
+
+To deploy the application to EKS, follow the bellow commands.
+
+To fetch and update the kubeconfig details
+(` aws eks update-kubeconfig --name <eks-Name> --region <aws-region> `)
+
+To create the namespace, run the below command. This could be a onetime action, for the initial set up.
+(` kubectl apply -f ./manifests/namespace-1.yaml `) 
+
+To create the deployment resource, run the below command
+(` kubectl apply -f ./manifests/deploy-webapp.yaml `) 
+
+To create the service, run the below command.
+(` kubectl apply -f ./manifests/service-webapp.yaml `) 
+
+To check the deployment of the resources, run below commands,
+(` kubectl get all -n <your namespace> 
+
+From the service created, copy the EXTERNAL-IP url to access the application.
+
 
 ## CICD Workflow using GitHub Actions
+
+
