@@ -98,4 +98,16 @@ From the service created, copy the EXTERNAL-IP url to access the application.
 
 ## CICD Workflow using GitHub Actions
 
+This Workflow automates the process of integration of the application and and deployment. It majorly consists of below tasks.
+1. Checkout the code 
+2. Test the unit test cases
+3. Package the application into a jar
+4. Build a docker image and push it to ECR repocitory
+5. Deploy the docker image to EKS
+
+Store the secretes such as AWS credentials using GitHub secretes.
+
+[To know more](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions)
+
+
 
