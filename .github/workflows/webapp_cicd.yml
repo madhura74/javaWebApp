@@ -77,12 +77,7 @@ jobs:
             id: install
               
     -   name: update config
-        env:
-            AWS_REGION: ${{ secrets.AWS_REGION }}
-            AWS_EKS_NAME: ${{ secrets.AWS_EKS_NAME }}
-        run: |
-            echo $AWS_REGION $AWS_EKS_NAME
-            aws eks update-kubeconfig --name mad-eks-01 --region ap-south-1
+        run: aws eks update-kubeconfig --name mad-eks-01 --region ap-south-1
   
             
     -   name: Deploy to EKS
