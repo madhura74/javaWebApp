@@ -70,11 +70,7 @@ jobs:
             id: install
               
     -   name: update config
-        env: 
-            
-            AWS_AKS_NAME: ${{ env.AWS_EKS_NAME }}
-            AWS_REGION: ${{ secrets.AWS_REGION }}
-        run: aws eks update-kubeconfig --name $AWS_AKS_NAME --region $AWS_REGION
+        run: aws eks update-kubeconfig --name mad-eks-01 --region ap-south-1
 
     -   name: Update image tag
         uses: swdotcom/update-and-apply-kubernetes-configs@v1
