@@ -72,13 +72,13 @@ jobs:
     -   name: update config
         run: aws eks update-kubeconfig --name mad-eks-01 --region ap-south-1
 
-    -   name: Update image tag
-        uses: swdotcom/update-and-apply-kubernetes-configs@v1
-        with:
-            k8-config-file-paths: ./manifests/deploy-webapp.yaml 
-            replacement-method: defined
-        env:
-            IMAGE_TAG: ${{ steps.vars.outputs.github_short_sha }}
+    # -   name: Update image tag
+    #     uses: swdotcom/update-and-apply-kubernetes-configs@v1
+    #     with:
+    #         k8-config-file-paths: ./manifests/deploy-webapp.yaml 
+    #         replacement-method: defined
+    #     env:
+    #         IMAGE_TAG: ${{ steps.vars.outputs.github_short_sha }} 
   
             
     -   name: Deploy to EKS
