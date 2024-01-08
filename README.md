@@ -118,7 +118,7 @@ To deploy the application to EKS, follow the bellow commands.
       
    ` kubectl get all -n <your namespace> `
 
-7. access the application, by coping the EXTERNAL-IP url from response of the above command.
+7. access the application, by coping the EXTERNAL-IP url from Service details in the response of the above command.
 
 
 ## CICD Workflow using GitHub Actions
