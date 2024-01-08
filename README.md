@@ -5,11 +5,11 @@ This guide provides step-by-step instructions for deploying the javaWebApp, a si
 Use the `README.md` to get started.
 
 ## Pre requisite
-Before proceeding with the deployment, ensure that the following prerequisites are met:
+Before proceeding with the implementation, ensure that the following prerequisites are met:
 
 - [ ] Java Development Kit (JDK) installed
 - [ ] Apache Maven installed
-- [ ] Docker
+- [ ] Docker 
 - [ ] Kubectl
 - [ ] AWS account with a valid Access Key Id and secrete access key
 - [ ] AWS CLI
@@ -17,23 +17,23 @@ Before proceeding with the deployment, ensure that the following prerequisites a
 - [ ] Amazon S3 Bucket to store terraform state file.
 
 ## Developers
-Clone the Repository
+1. Clone the Repository
 
-` git clone https://github.com/your-username/your-java-application.git `
+   ` git clone https://github.com/your-username/your-java-application.git `
 
-Build the Application
+2. Build the Application
 
-Navigate to the application's root directory and build the project using Maven:
+   Navigate to the application's root directory and build the project using Maven:
 
-` mvn clean install `
+   ` mvn clean install `
 
-Test the Application 
+3. Test the Application 
 
-` mvn clean test `
+   ` mvn clean test `
 
-Run the application using the following Maven command:
+4. Run the application using the following Maven command:
 
-` mvn spring-boot:run `
+   ` mvn spring-boot:run `
 
 The application will be accessible at [http://localhost:8080](http://localhost:8080).
 
@@ -46,11 +46,11 @@ Follow the steps mentioned below to run the dockerised instance of the applicati
 
 1. Build the docker image from the root directory
    
-` docker build -t java_webapp . `
+   ` docker build -t java_webapp . `
 
 3. Run the docker image.
    
-` docker run -p 8080:8080 -td java_webapp `
+   ` docker run -p 8080:8080 -td java_webapp `
 
 The application will be accessible at [http://localhost:8080](http://localhost:8080).
 
@@ -62,24 +62,24 @@ This infracture consists creation of ECR to store docker images, a VPC and its c
 
 1. Set the AWS configuration profile with below command
    
-`aws configure --profile terraform `
+   `aws configure --profile terraform `
 
-Provide the values of your ID, secrete and region.
+   Provide the values of your ID, secrete and region.
 
 
 3. Initiate the terraform, Run this command from the ./terraform folder
    
-` terraform init `
+   ` terraform init `
 
 4. Terraform Plan
-   
-` terraform plan `
+      
+   ` terraform plan `
 
 6. Create the resources in AWS
    
-` terraform apply`
+   ` terraform apply`
 
-Note :
+**Note:**
 
 The terraform state file will be referred from S3 bucket which is previosly created. 
 
@@ -88,7 +88,7 @@ If you want to delete the resources after application deployment and testing, ru
 ` terraform destroy `
 
 
-## Kubernetes Manifestation
+## Kubernetes Manifests
 
 This application needs a namespace, kubernetes deployment resource which will spin up the instance of the application using the image from ECR.
 
@@ -100,23 +100,23 @@ To deploy the application to EKS, follow the bellow commands.
 
 1. fetch and update the kubeconfig details
    
-` aws eks update-kubeconfig --name <eks-Name> --region <aws-region> `
+   ` aws eks update-kubeconfig --name <eks-Name> --region <aws-region> `
 
 3. create the namespace, run the below command. This could be a onetime action, only during the initial setup.
    
-` kubectl apply -f ./manifests/namespace-1.yaml ` 
+   ` kubectl apply -f ./manifests/namespace-1.yaml ` 
 
 4. create the deployment resource, run the below command
    
-` kubectl apply -f ./manifests/deploy-webapp.yaml ` 
+   ` kubectl apply -f ./manifests/deploy-webapp.yaml ` 
 
 5. create the service, run the below command.
    
-` kubectl apply -f ./manifests/service-webapp.yaml ` 
+   ` kubectl apply -f ./manifests/service-webapp.yaml ` 
 
 6. check the deployment of the resources, run below commands,
-   
-` kubectl get all -n <your namespace> `
+      
+   ` kubectl get all -n <your namespace> `
 
 7. access the application, by coping the EXTERNAL-IP url from response of the above command.
 
@@ -132,12 +132,16 @@ To deploy the application to EKS, follow the bellow commands.
 
 The pipeline will be automatically triggered upon commits to configured branches.
 
-Note: Before executing the pipeline, Store the secretes such as below, in GitHub secretes using following steps. 
+**Note:** Before executing the pipeline, Store the secretes such as below, in GitHub secretes using following steps. 
 
 AWS_ACCESS_KEY_ID
+
 AWS_EKS_NAME
+
 AWS_REGION
+
 AWS_REPO_NAME
+
 AWS_SECRET_ACCESS_KEY
 
 1. On GitHub.com, navigate to the main page of the repository.
@@ -159,6 +163,8 @@ To check the Pipeline executions, navigate to the main page of the repository.
 Select Actions, under All workflows select _Java WebApp CICD_.
 
 Once you select the latest run, you can check the status of all the jobs and tasks it has executed.
+
+
 
 
 
