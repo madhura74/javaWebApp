@@ -4,6 +4,12 @@ This repository contains a simple Java Spring Boot application that displays a w
 
 This README provides the steps needed to run, containerize, deploy, and manage the application in a cloud environment.
 
+## Project Overview
+
+This project is designed to demonstrate a complete DevOps workflow for a Java Spring Boot application. It includes local execution, Docker packaging, Terraform-based AWS infrastructure provisioning, Kubernetes deployment, and automated CI/CD using GitHub Actions.
+
+The goal is to show how a simple application can be built, containerized, deployed to a cloud environment, and managed using modern automation practices.
+
 ## Prerequisites
 
 Before you begin, make sure the following tools and resources are available:
